@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Scroll</title>
+		<link href="styles.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<div class="carousel-wrapper">
+			<button class="scroll-button scroll-button-up">UP</button>
+
+			<div class="carousel-container">
+				<div class="card" tabindex="0" data-index="0">
+					<img src="https://images.pexels.com/photos/16053278/pexels-photo-16053278.jpeg" />
+				</div>
+
+				<div class="card" tabindex="0" data-index="1">
+					<img src="https://images.pexels.com/photos/8473910/pexels-photo-8473910.jpeg" />
+				</div>
+
+				<div class="card" tabindex="0" data-index="2">
+					<img src="https://images.unsplash.com/photo-1689781922550-81cacef1d933?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=685&q=80" />
+				</div>
+
+				<div class="card" tabindex="0" data-index="3">
+					<img src="https://images.unsplash.com/photo-1689621207547-3d41614b2588?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" />
+				</div>
+
+				<div class="card" tabindex="0" data-index="4">
+					<img src="https://images.unsplash.com/photo-1689164712603-7122c72ddef6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" />
+				</div>
+			</div>
+
+			<button class="scroll-button scroll-button-down">DOWN</button>
+		</div>
+		
+		<script src="script.js"></script>
+		<script>
+			new CarouselPlugin({
+				gap: 2
+			})
+		</script>
+	</body>
+</html>
