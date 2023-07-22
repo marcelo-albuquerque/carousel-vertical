@@ -155,22 +155,6 @@ class CarouselPlugin {
       })
     }
 
-    const AddEventListenerToNavigationButtons = ( navigationButtons, FirstCard, MarginBaseValue ) => {
-      let margin = MarginBaseValue
-
-      function NavigateEvents( Event, FirstCard ) {
-
-      }
-
-      navigationButtons.forEach(NavigationButton => {
-        if ( NavigationButton.classList.contains( 'navigation-button-up' ) ) {
-          
-        } else if ( NavigationButton.classList.contains( 'navigation-button-down' ) ) {
-
-        }
-      })
-    }
-
     WrapperContainers.forEach(WrapperContainer => {
       const carouselContainer = WrapperContainer.querySelector( '.carousel-container' )
 
@@ -189,7 +173,6 @@ class CarouselPlugin {
       AddStylesToAllCards( cards, Args.gap )
       AddStylesToActiveCards( cards, Args.numberOfActiveItems, marginBaseValue )
       AddEventListeners( cards, navigationButtons, marginBaseValue )
-      //AddEventListenerToNavigationButtons( navigationButtons, firstCard, marginBaseValue )
     });
   }
 }
