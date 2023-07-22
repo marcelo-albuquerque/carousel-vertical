@@ -14,7 +14,7 @@ body {
 
   margin: 0;
 
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .carousel-wrapper {
@@ -59,18 +59,27 @@ body {
   object-fit: cover;
 }
 
-.scroll-button {
-  display: flex;
+.navigation-button {
+  background: none;
 
+  display: flex;
   margin: auto;
 
   width: fit-content;
-}
+  height: fit-content;
 
-.scroll-button-up {
+  border: none;
+  cursor: pointer;
+}
+  .navigation-button img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+.navigation-button-up {
   margin-bottom: 1.5rem;
 }
 
-.scroll-button-down {
+.navigation-button-down {
   margin-top: 1.5rem;
 }

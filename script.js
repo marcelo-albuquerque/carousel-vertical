@@ -17,39 +17,157 @@ class CarouselPlugin {
       CarouselContainer.style.height = `${ CarouselContainerHeight }rem`
     }
 
-    const AddStylesToFirstCard = ( FirstCard, MarginBaseValue ) => {
-      FirstCard.classList.add( 'active' )
-      FirstCard.style.marginTop = `${ MarginBaseValue }rem`
-    }
-
-    const AddEventListenerToAllCards = ( Cards, FirstCard, MarginBaseValue ) => {
-      function RemoveClassActiveFromAllCards( Cards ) {
-        Cards.forEach( Card => Card.classList.remove( 'active' ) )
+    const AddStylesToActiveCards = ( Cards, NumberOfActiveItems, MarginBaseValue ) => {
+      for ( let index = 0; index < NumberOfActiveItems; index++ ) {
+        Cards[index].classList.add( 'active' )
       }
 
-      function NavigateEvents( Event, MarginBaseValue, FirstCard ) {
+      Cards[0].style.marginTop = `${ MarginBaseValue }rem`
+    }
+
+    const AddEventListeners = ( Cards, NavigationButtons, MarginBaseValue ) => {
+      const GetActiveCards = ( Cards ) => {
+        const activeCards = []
+
+        Cards.forEach(Card => {
+          if ( Card.classList.contains( 'active' ) ) {
+            activeCards.push( Card )
+          }
+        })
+
+        return activeCards
+      }
+
+      let margin = MarginBaseValue
+      const firstCard = Cards[0]
+            
+      function NavigateCardsEvents( Event, Cards ) {
+        const VerifyDirection = ( ActiveCards, Card ) => {
+          const cardIndex = parseInt( Card.getAttribute( 'data-index' ) )
+
+          let direction
+
+          ActiveCards.forEach(ActiveCard => {
+            const activeCardIndex = parseInt( ActiveCard.getAttribute( 'data-index' ) )
+
+            if ( cardIndex > activeCardIndex ) {
+              direction = 'down'
+            } else {
+              direction = 'up'
+            }
+          })
+
+          return direction
+        }
+
         const card = Event.currentTarget
-        const cardIndex = parseInt( card.getAttribute( 'data-index' ) )
+        const firstCard = Cards[0]
 
-        card.classList.add( 'active' )
+        if ( !card.classList.contains( 'active' ) ) {
+          const activeCards = GetActiveCards( Cards )
 
-        if ( cardIndex === 0 ) {
-          FirstCard.style.marginTop = `${ MarginBaseValue }rem`
-        } else {
-          const margin = ( MarginBaseValue * cardIndex ) - MarginBaseValue
+          card.classList.add( 'active' )
 
-          FirstCard.style.marginTop = `-${ margin }rem`
-        }        
+          const direction = VerifyDirection( activeCards, card )
+          
+          if ( direction === 'down' ) {
+            activeCards[0].classList.remove( 'active' )
+
+            margin = margin - MarginBaseValue
+            firstCard.style.marginTop = `${ margin }rem`
+          } else if ( direction === 'up' ) {
+            activeCards[activeCards.length - 1].classList.remove( 'active' )
+
+            margin = margin + MarginBaseValue
+            firstCard.style.marginTop = `${ margin }rem`
+          }
+        }
       }
 
       Cards.forEach(Card => {
-        Card.addEventListener('click', () => {
-          RemoveClassActiveFromAllCards( Cards )
-        })
-
         Card.addEventListener('click', ( event ) => {
-          NavigateEvents( event, MarginBaseValue, FirstCard )
+          NavigateCardsEvents( event, Cards )
         })
+      })
+
+      NavigationButtons.forEach(Button => {
+        if ( Button.classList.contains( 'navigation-button-down' ) ) {
+          Button.addEventListener('click', () => {
+            const VerifyAfterCard = ( ActiveLastCardIndex, Cards ) => {
+              const card = Cards[ActiveLastCardIndex + 1]
+
+              if ( card !== undefined ) {
+                return true
+              } else {
+                return false
+              }
+            }
+
+            const activeCards = GetActiveCards( Cards )
+
+            const activeLastCardIndex = parseInt( activeCards[activeCards.length - 1].getAttribute( 'data-index' ) )
+
+            const afterCard = VerifyAfterCard( activeLastCardIndex, Cards )
+
+            if ( afterCard === true ) {
+              activeCards[0].classList.remove( 'active' )
+
+              Cards[activeLastCardIndex + 1].classList.add( 'active' )
+  
+              margin = margin - MarginBaseValue
+  
+              firstCard.style.marginTop = `${ margin }rem`
+            } else {
+              //
+            }            
+          })
+        } else if ( Button.classList.contains( 'navigation-button-up' ) ) {
+          Button.addEventListener('click', () => {
+            const VerifyBeforeCard = ( ActiveFirstCardIndex, Cards ) => {
+              const card = Cards[ActiveFirstCardIndex - 1]
+
+              if ( card !== undefined ) {
+                return true
+              } else {
+                return false
+              }
+            }
+
+            const activeCards = GetActiveCards( Cards )
+
+            const activeFirstCardIndex = parseInt( activeCards[0].getAttribute( 'data-index' ) )
+
+            const beforeCard = VerifyBeforeCard( activeFirstCardIndex, Cards )
+
+            if ( beforeCard === true ) {
+              activeCards[activeCards.length - 1].classList.remove( 'active' )
+
+              Cards[activeFirstCardIndex - 1].classList.add( 'active' )
+  
+              margin = margin + MarginBaseValue
+  
+              firstCard.style.marginTop = `${ margin }rem`
+            } else {
+              // Podemos ocultar o botão por exemplo.
+            }
+          })
+        }
+      })
+    }
+
+    const AddEventListenerToNavigationButtons = ( navigationButtons, FirstCard, MarginBaseValue ) => {
+      let margin = MarginBaseValue
+
+      function NavigateEvents( Event, FirstCard ) {
+
+      }
+
+      navigationButtons.forEach(NavigationButton => {
+        if ( NavigationButton.classList.contains( 'navigation-button-up' ) ) {
+          
+        } else if ( NavigationButton.classList.contains( 'navigation-button-down' ) ) {
+
+        }
       })
     }
 
@@ -57,16 +175,21 @@ class CarouselPlugin {
       const carouselContainer = WrapperContainer.querySelector( '.carousel-container' )
 
       const cards = carouselContainer.querySelectorAll( '.card' )
-      const firstCard = cards[0]
-      const cardHeight = cards[1].getBoundingClientRect().height / 16
-      
+      const cardHeight = cards[0].getBoundingClientRect().height / 16
+
       const marginBaseValue = cardHeight + Args.gap
-      const carouselContainerHeight = ( cardHeight * 3 ) + ( Args.gap * 4 )
+      const countSpaces = Args.numberOfActiveItems + 2
+      const countGaps = Args.numberOfActiveItems + 3
+
+      const carouselContainerHeight = ( cardHeight * countSpaces ) + ( Args.gap * countGaps )
+
+      const navigationButtons = WrapperContainer.querySelectorAll( '.navigation-button' )
 
       AddStylesToCarouselContainer( carouselContainer, carouselContainerHeight, Args.gap )
       AddStylesToAllCards( cards, Args.gap )
-      AddStylesToFirstCard( firstCard, marginBaseValue )
-      AddEventListenerToAllCards( cards, firstCard, marginBaseValue )
+      AddStylesToActiveCards( cards, Args.numberOfActiveItems, marginBaseValue )
+      AddEventListeners( cards, navigationButtons, marginBaseValue )
+      //AddEventListenerToNavigationButtons( navigationButtons, firstCard, marginBaseValue )
     });
   }
 }

@@ -9,7 +9,7 @@
 
 	<body>
 		<div class="carousel-wrapper">
-			<button class="scroll-button scroll-button-up">UP</button>
+			<button class="navigation-button navigation-button-up"><img src="https://tabler-icons.io/static/tabler-icons/icons/circle-arrow-up.svg" alt="Arrow Up" /></button>
 
 			<div class="carousel-container">
 				<div class="card" tabindex="0" data-index="0">
@@ -33,13 +33,14 @@
 				</div>
 			</div>
 
-			<button class="scroll-button scroll-button-down">DOWN</button>
+			<button class="navigation-button navigation-button-down"><img src="https://tabler-icons.io/static/tabler-icons/icons/circle-arrow-down.svg" alt="Arrow Down" /></button>
 		</div>
 		
 		<script src="script.js"></script>
 		<script>
 			new CarouselPlugin({
-				gap: 2
+				gap: 2,
+				numberOfActiveItems: 1
 			})
 		</script>
 	</body>
